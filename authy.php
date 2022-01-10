@@ -69,7 +69,6 @@ function getValidRefreshToken(){
 
 if (getValidAccessToken()){
     $access_token = getValidAccessToken();
-    exit();
 }else {
     if (getValidRefreshToken()){
         $authorizationCode = getValidRefreshToken();
@@ -77,32 +76,32 @@ if (getValidAccessToken()){
         //Defini o código de autorização manual apenas 1 vez
         $authorizationCode = "TG-61db87b79859c4001bbe7296-494138856";
     }
-}
 
-$appId = "5071444836265136";
+    $appId = "5071444836265136";
 
-$clientSecret = "rbQhY1VCGbVuju6iYFT0hwaktmUo19nl";
-
-$redirect_uri = "https://www.mercadolivre.com.br/";
-
-$paramsToGenerateAccessToken = array(
-    "appId" => $appId,
-    "clientSecret" => $clientSecret,
-    "code" => $authorizationCode,
-    "redirect_uri" => $redirect_uri
-);
-
-$response = gerarAccessToken($paramsToGenerateAccessToken);
-
-if (validaAccessToken($response)){
-    $refreshInfo = array(
-        "access_token" => $response['access_token'],
-        "refresh_token" => $response['refresh_token'],
-        "expires_timestamp" =>  time() + 6*60*60
+    $clientSecret = "rbQhY1VCGbVuju6iYFT0hwaktmUo19nl";
+    
+    $redirect_uri = "https://www.mercadolivre.com.br/";
+    
+    $paramsToGenerateAccessToken = array(
+        "appId" => $appId,
+        "clientSecret" => $clientSecret,
+        "code" => $authorizationCode,
+        "redirect_uri" => $redirect_uri
     );
-    salvarRefreshToken($refreshInfo);
-}else {
-    echo "O token não foi gerado: " . $response['message'];
+    
+    $response = gerarAccessToken($paramsToGenerateAccessToken);
+    
+    if (validaAccessToken($response)){
+        $refreshInfo = array(
+            "access_token" => $response['access_token'],
+            "refresh_token" => $response['refresh_token'],
+            "expires_timestamp" =>  time() + 6*60*60
+        );
+        salvarRefreshToken($refreshInfo);
+    }else {
+        echo "O token não foi gerado: " . $response['message'];
+    }
 }
 
 #URL de autenticação
